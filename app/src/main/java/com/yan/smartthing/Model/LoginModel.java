@@ -23,4 +23,12 @@ public class LoginModel  {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "LoginModel{" +
+                "account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

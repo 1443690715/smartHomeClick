@@ -3,26 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/background_splash"
-    android:clipToPadding="true"
-    android:fitsSystemWindows="true"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".View.LoginView.LoginActivity">
+    tools:context=".View.SignInView.SignInActivity">
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="92dp"
-        android:text="智能生活客户端"
-        android:textColor="@color/white"
-        android:textSize="35sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,40 +26,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:id="@+id/edit_account"
-            android:hint="请输入账号"/>
+            android:id="@+id/edit_sign_username"
+            android:hint="请输入用户名"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:id="@+id/edit_password"
+            android:id="@+id/edit_sign_password"
             android:inputType="textPassword"
             android:hint="请输入密码"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edit_sign_password_twice"
+            android:inputType="textPassword"
+            android:hint="请确认密码"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edit_sign_email"
+            android:inputType="textEmailAddress"
+            android:hint="请输入邮箱"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edit_sign_phone_number"
+            android:inputType="phone"
+            android:hint="请输入手机号码"/>
+
     </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登录"
+        android:text="注册"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:textSize="20sp"
-        android:id="@+id/button_login"
+        android:id="@+id/button_sign_sign"
         android:background="@color/white_transparen"
         android:layout_marginTop="66dp"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentEnd="true"
         />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="注册"
-        android:id="@+id/text_sign"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

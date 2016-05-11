@@ -10,4 +10,8 @@ import com.yan.smartthing.Model.LoginModel;
 public interface LoginView extends MvpView {
     LoginModel onGetEditTextString();
     void onSetLoginMessage(String account,String password);
+    void onLoginSuccess();
+    void onLoginError();
+    void onShowToast();
+    void onError(String error);
 }
