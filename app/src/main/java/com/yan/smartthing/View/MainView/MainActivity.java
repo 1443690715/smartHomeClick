@@ -1,5 +1,7 @@
 package com.yan.smartthing.View.MainView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,15 +18,22 @@ import android.widget.TextView;
 
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.yan.smartthing.Model.AccountModel;
+import com.yan.smartthing.Model.BlueToothModel;
 import com.yan.smartthing.Presenter.MainPresenter;
 import com.yan.smartthing.R;
 
-public class MainActivity extends MvpActivity<MainView,MainPresenter>
-        implements NavigationView.OnNavigationItemSelectedListener,MainView{
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
+import app.akexorcist.bluetotohspp.library.DeviceList;
+
+public class MainActivity extends MvpActivity<MainView, MainPresenter>
+        implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
     private TextView leftTitleuserName;
     private TextView leftTitleEmail;
     private AccountModel userInfo;
+
+    private BlueToothModel blueToothModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +63,22 @@ public class MainActivity extends MvpActivity<MainView,MainPresenter>
 
 
         View headerView = navigationView.getHeaderView(0);
-        leftTitleuserName = (TextView)headerView. findViewById(R.id.text_left_title_username);
+        leftTitleuserName = (TextView) headerView.findViewById(R.id.text_left_title_username);
         leftTitleEmail = (TextView) headerView.findViewById(R.id.text_left_title_email);
+
+        blueToothModel = BlueToothModel.getInstance(getApplicationContext());
+
+        Log.e("blueModel", "" + blueToothModel.toString());
 
         initTitle();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -86,10 +106,15 @@ public class MainActivity extends MvpActivity<MainView,MainPresenter>
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            blueToothModel.send("6666",true);
+            blueToothData();
+        }
+        if (id == R.id.action_select_bluetooth) {
+            Intent intent = new Intent(getApplicationContext(), DeviceList.class);
+            startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -116,8 +141,6 @@ public class MainActivity extends MvpActivity<MainView,MainPresenter>
         drawer.closeDrawer(GravityCompat.START);
 
 
-
-
         return true;
     }
 
@@ -130,5 +153,33 @@ public class MainActivity extends MvpActivity<MainView,MainPresenter>
         leftTitleuserName.setText(userInfo.getUsername());
         leftTitleEmail.setText(userInfo.getEmail());
 
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
+            if (resultCode == Activity.RESULT_OK)
+                blueToothModel.connect(data);
+            blueToothData();
+        } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_OK) {
+                blueToothModel.setupService();
+                blueToothModel.startService(BluetoothState.DEVICE_OTHER);
+
+                blueToothData();
+            } else {
+                // Do something if user doesn't choose any device (Pressed back)
+            }
+        }
+    }
+
+
+    private void blueToothData() {
+        blueToothModel.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
+            @Override
+            public void onDataReceived(byte[] data, String message) {
+                Log.e("Main", "" + message + "\n");
+            }
+        });
     }
 }

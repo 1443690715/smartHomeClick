@@ -41,4 +41,6 @@ dependencies {
 
     //bmob-push：Bmob的推送包
     compile 'cn.bmob.android:bmob-push:0.8'
+
+    compile 'com.akexorcist:bluetoothspp:1.0.0'
 }
