@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,7 @@ import com.yan.smartthing.Model.AccountModel;
 import com.yan.smartthing.Model.BlueToothModel;
 import com.yan.smartthing.Presenter.MainPresenter;
 import com.yan.smartthing.R;
+import com.yan.smartthing.View.HomePage.HomePageFragment;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
@@ -29,16 +31,18 @@ import app.akexorcist.bluetotohspp.library.DeviceList;
 public class MainActivity extends MvpActivity<MainView, MainPresenter>
         implements NavigationView.OnNavigationItemSelectedListener, MainView {
 
-    private TextView leftTitleuserName;
+    private TextView leftTitleUserName;
     private TextView leftTitleEmail;
     private AccountModel userInfo;
 
     private BlueToothModel blueToothModel;
+    private HomePageFragment homePageFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+
     }
 
     @NonNull
@@ -63,7 +67,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
 
 
         View headerView = navigationView.getHeaderView(0);
-        leftTitleuserName = (TextView) headerView.findViewById(R.id.text_left_title_username);
+        leftTitleUserName = (TextView) headerView.findViewById(R.id.text_left_title_username);
         leftTitleEmail = (TextView) headerView.findViewById(R.id.text_left_title_email);
 
         blueToothModel = BlueToothModel.getInstance(getApplicationContext());
@@ -78,6 +82,33 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
         super.onStart();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initFragment();
+    }
+
+    /**
+     * 初始化Fragment
+     */
+    private void initFragment() {
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+
+        homePageFragment = new HomePageFragment();
+
+        fragmentTransaction.add(R.id.frame_layout_main, homePageFragment);
+
+        fragmentTransaction.commit();
+
+        homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
+            @Override
+            public boolean isBlueToothOnline() {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -106,7 +137,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            blueToothModel.send("6666",true);
+            blueToothModel.send("6666", true);
             blueToothData();
         }
         if (id == R.id.action_select_bluetooth) {
@@ -150,9 +181,14 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
     @Override
     public void initTitle() {
         userInfo = getPresenter().getUserInfo(this);
-        leftTitleuserName.setText(userInfo.getUsername());
+        leftTitleUserName.setText(userInfo.getUsername());
         leftTitleEmail.setText(userInfo.getEmail());
 
+    }
+
+    @Override
+    public boolean isBlueToothOnline() {
+        return false;
     }
 
 
@@ -160,16 +196,33 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
             if (resultCode == Activity.RESULT_OK)
                 blueToothModel.connect(data);
+            Log.e("Main", "001" + "\n");
+            homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
+                @Override
+                public boolean isBlueToothOnline() {
+                    Log.e("Main", "003" + "\n");
+                    return true;
+                }
+            });
             blueToothData();
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 blueToothModel.setupService();
                 blueToothModel.startService(BluetoothState.DEVICE_OTHER);
+                Log.e("Main", "002" + "\n");
 
                 blueToothData();
             } else {
                 // Do something if user doesn't choose any device (Pressed back)
             }
+
+            homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
+                @Override
+                public boolean isBlueToothOnline() {
+                    Log.e("Main", "003" + "\n");
+                    return true;
+                }
+            });
         }
     }
 
