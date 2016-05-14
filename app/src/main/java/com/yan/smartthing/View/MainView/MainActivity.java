@@ -38,6 +38,13 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
     private BlueToothModel blueToothModel;
     private HomePageFragment homePageFragment;
 
+    private BlueToothOnline blueToothOnline;
+    private static boolean first = true;
+
+    public void setBlueToothOnline(BlueToothOnline blueToothOnline) {
+        this.blueToothOnline = blueToothOnline;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,11 +104,16 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
 
-        homePageFragment = new HomePageFragment();
 
+        homePageFragment = HomePageFragment.getInstance();
+
+        Log.e("mainFragment",homePageFragment.toString());
+
+        if (first)
         fragmentTransaction.add(R.id.frame_layout_main, homePageFragment);
 
         fragmentTransaction.commit();
+        first = false;
 
         homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
             @Override
@@ -194,45 +206,37 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
-            if (resultCode == Activity.RESULT_OK)
+            if (resultCode == Activity.RESULT_OK){
                 blueToothModel.connect(data);
-            Log.e("Main", "001" + "\n");
-            homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
-                @Override
-                public boolean isBlueToothOnline() {
-                    Log.e("Main", "003" + "\n");
-                    return true;
-                }
-            });
+                homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
+                    @Override
+                    public boolean isBlueToothOnline() {
+                        Log.e("Main", "003" + "\n");
+                        return true;
+                    }
+                });
+            }
             blueToothData();
         } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
             if (resultCode == Activity.RESULT_OK) {
                 blueToothModel.setupService();
                 blueToothModel.startService(BluetoothState.DEVICE_OTHER);
                 Log.e("Main", "002" + "\n");
-
                 blueToothData();
             } else {
                 // Do something if user doesn't choose any device (Pressed back)
             }
 
-            homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
-                @Override
-                public boolean isBlueToothOnline() {
-                    Log.e("Main", "003" + "\n");
-                    return true;
-                }
-            });
         }
     }
 
 
     private void blueToothData() {
-        blueToothModel.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
-            @Override
-            public void onDataReceived(byte[] data, String message) {
-                Log.e("Main", "" + message + "\n");
-            }
-        });
+
+    }
+
+
+    public interface BlueToothOnline{
+        void bluetoohisonline(boolean is);
     }
 }

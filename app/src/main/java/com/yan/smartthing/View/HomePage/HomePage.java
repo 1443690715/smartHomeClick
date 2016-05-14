@@ -1,6 +1,7 @@
 package com.yan.smartthing.View.HomePage;
 
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.yan.smartthing.Model.Environment;
 
 /**
  * 首页接口
@@ -9,4 +10,5 @@ import com.hannesdorfmann.mosby.mvp.MvpView;
 public interface HomePage extends MvpView {
     void setMyDriverState(String text);
     boolean BlueToothIsOnline();
+    void setEnvironment(Environment environment);
 }
