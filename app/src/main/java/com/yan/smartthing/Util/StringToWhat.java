@@ -3,6 +3,7 @@ package com.yan.smartthing.Util;
 import com.yan.smartthing.Model.Environment;
 
 /**
+ *
  * Created by a7501 on 2016/1/24.
  */
 public class StringToWhat {
@@ -29,11 +30,13 @@ public class StringToWhat {
             stringNum.setTemperature(stringToFloat(num[0]));
             stringNum.setHumidity(stringToFloat(num[1]));
             stringNum.setWater(stringToFloat(num[2]));
+            stringNum.setPm2(stringToFloat(num[3]));
 
         }catch (Exception e){
             stringNum.setTemperature((float)0);
             stringNum.setHumidity((float)0);
             stringNum.setWater((float)0);
+            stringNum.setPm2((float)0);
         }
 
         return stringNum;

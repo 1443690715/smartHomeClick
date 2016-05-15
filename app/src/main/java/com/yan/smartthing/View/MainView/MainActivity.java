@@ -22,7 +22,9 @@ import com.yan.smartthing.Model.AccountModel;
 import com.yan.smartthing.Model.BlueToothModel;
 import com.yan.smartthing.Presenter.MainPresenter;
 import com.yan.smartthing.R;
+import com.yan.smartthing.View.HomePage.HomePage;
 import com.yan.smartthing.View.HomePage.HomePageFragment;
+import com.yan.smartthing.View.ListPage.ListFragment;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
@@ -40,6 +42,8 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
 
     private BlueToothOnline blueToothOnline;
     private static boolean first = true;
+    private ListFragment listFragment;
+    private FragmentTransaction fragmentTransaction;
 
     public void setBlueToothOnline(BlueToothOnline blueToothOnline) {
         this.blueToothOnline = blueToothOnline;
@@ -102,15 +106,18 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
      */
     private void initFragment() {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction = supportFragmentManager.beginTransaction();
 
 
         homePageFragment = HomePageFragment.getInstance();
+     //   listFragment = ListFragment.getListFragment();
 
-        Log.e("mainFragment",homePageFragment.toString());
+        Log.e("mainFragment", homePageFragment.toString());
 
-        if (first)
-        fragmentTransaction.add(R.id.frame_layout_main, homePageFragment);
+        if (first) {
+            fragmentTransaction.replace(R.id.frame_layout_main, homePageFragment);
+            // fragmentTransaction.add(R.id.frame_layout_main, listFragment);
+        }
 
         fragmentTransaction.commit();
         first = false;
@@ -167,8 +174,24 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+
+            HomePageFragment homePageFragment = new HomePageFragment();
+            FragmentManager supportFragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.frame_layout_main, homePageFragment);
+            fragmentTransaction.commit();
+
+
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            Log.e("Main", "89562");
+            listFragment = new ListFragment();
+             {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.frame_layout_main, listFragment);
+                fragmentTransaction.commit();
+            }
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -206,7 +229,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
-            if (resultCode == Activity.RESULT_OK){
+            if (resultCode == Activity.RESULT_OK) {
                 blueToothModel.connect(data);
                 homePageFragment.setHomePageInterface(new HomePageFragment.HomePageInterface() {
                     @Override
@@ -236,7 +259,7 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
     }
 
 
-    public interface BlueToothOnline{
+    public interface BlueToothOnline {
         void bluetoohisonline(boolean is);
     }
 }

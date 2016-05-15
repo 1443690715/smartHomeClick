@@ -10,7 +10,15 @@ public class Environment extends BmobObject{
     private Float temperature;   //温度
     private Float humidity;      //湿度
     private Float water;           //水位
+    private Float pm2;             //pm2.5
 
+    public Float getPm2() {
+        return pm2;
+    }
+
+    public void setPm2(Float pm2) {
+        this.pm2 = pm2;
+    }
 
     public Float getTemperature() {
         return temperature;

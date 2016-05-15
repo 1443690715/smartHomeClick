@@ -45,6 +45,7 @@ public class HomePageFragment extends MvpFragment<HomePage, HomePagePresenter> i
     private TextView wendu;
     private TextView shidu;
     private TextView shuiwei;
+    private TextView pm2;
 
 
     public interface HomePageInterface {
@@ -90,6 +91,7 @@ public class HomePageFragment extends MvpFragment<HomePage, HomePagePresenter> i
         wendu = (TextView) view.findViewById(R.id.text_table_wendu);
         shidu = (TextView) view.findViewById(R.id.text_table_shidu);
         shuiwei = (TextView) view.findViewById(R.id.text_table_shuiwei);
+        pm2 = (TextView) view.findViewById(R.id.text_table_pm2_5);
 
         addDrives.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +123,7 @@ public class HomePageFragment extends MvpFragment<HomePage, HomePagePresenter> i
             wendu.setText(String.valueOf(environment.getTemperature()));
             shidu.setText(String.valueOf(environment.getHumidity()));
             shuiwei.setText(String.valueOf(environment.getWater()));
+            pm2.setText(String.valueOf(environment.getPm2()));
         }
     }
 
