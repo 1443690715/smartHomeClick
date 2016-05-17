@@ -43,9 +43,11 @@
         <activity
             android:name=".View.MainView.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name="app.akexorcist.bluetoothspp.DeviceList" />
-        <activity android:name=".View.LoginView.LoginActivity"></activity>
+        <activity android:name=".View.LoginView.LoginActivity" />
+        <activity android:name=".View.ListPage.ListPage"
+            android:theme="@style/AppTheme_ActionBar"></activity>
     </application>
 
 </manifest>

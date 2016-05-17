@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -46,6 +47,8 @@ public class HomePageFragment extends MvpFragment<HomePage, HomePagePresenter> i
     private TextView shidu;
     private TextView shuiwei;
     private TextView pm2;
+    private SeekBar seekBar;
+    private TextView waterTableXian;
 
 
     public interface HomePageInterface {
@@ -93,10 +96,36 @@ public class HomePageFragment extends MvpFragment<HomePage, HomePagePresenter> i
         shuiwei = (TextView) view.findViewById(R.id.text_table_shuiwei);
         pm2 = (TextView) view.findViewById(R.id.text_table_pm2_5);
 
+        waterTableXian = (TextView) view.findViewById(R.id.text_table_shuiwei_xiandu);
+
+        final TextView waterXian = (TextView) view.findViewById(R.id.text_shuiwei_xiandu_zhi);
+
+        seekBar = (SeekBar) view.findViewById(R.id.seekBar);
+
         addDrives.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("HomePage", "123456");
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                waterXian.setText(String.valueOf(progress));
+                waterTableXian.setText(String.valueOf(progress));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress= seekBar.getProgress();
+                blueToothModel.send(String.valueOf(progress),true);
             }
         });
     }
@@ -124,6 +153,7 @@ public class HomePageFragment extends MvpFragment<HomePage, HomePagePresenter> i
             shidu.setText(String.valueOf(environment.getHumidity()));
             shuiwei.setText(String.valueOf(environment.getWater()));
             pm2.setText(String.valueOf(environment.getPm2()));
+            seekBar.setProgress(environment.getWaterXian());
         }
     }
 

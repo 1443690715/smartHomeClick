@@ -31,12 +31,14 @@ public class StringToWhat {
             stringNum.setHumidity(stringToFloat(num[1]));
             stringNum.setWater(stringToFloat(num[2]));
             stringNum.setPm2(stringToFloat(num[3]));
+            stringNum.setWaterXian((int) stringToFloat(num[4]));
 
         }catch (Exception e){
             stringNum.setTemperature((float)0);
             stringNum.setHumidity((float)0);
             stringNum.setWater((float)0);
             stringNum.setPm2((float)0);
+            stringNum.setWaterXian(50);
         }
 
         return stringNum;

@@ -25,13 +25,14 @@ import com.yan.smartthing.R;
 import com.yan.smartthing.View.HomePage.HomePage;
 import com.yan.smartthing.View.HomePage.HomePageFragment;
 import com.yan.smartthing.View.ListPage.ListFragment;
+import com.yan.smartthing.View.ListPage.ListPage;
 
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
 
 public class MainActivity extends MvpActivity<MainView, MainPresenter>
-        implements NavigationView.OnNavigationItemSelectedListener, MainView {
+        implements MainView {
 
     private TextView leftTitleUserName;
     private TextView leftTitleEmail;
@@ -73,13 +74,13 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+       // navigationView.setNavigationItemSelectedListener(this);
 
 
-        View headerView = navigationView.getHeaderView(0);
-        leftTitleUserName = (TextView) headerView.findViewById(R.id.text_left_title_username);
-        leftTitleEmail = (TextView) headerView.findViewById(R.id.text_left_title_email);
+      //  View headerView = navigationView.getHeaderView(0);
+      //  leftTitleUserName = (TextView) headerView.findViewById(R.id.text_left_title_username);
+      //  leftTitleEmail = (TextView) headerView.findViewById(R.id.text_left_title_email);
 
         blueToothModel = BlueToothModel.getInstance(getApplicationContext());
 
@@ -164,60 +165,64 @@ public class MainActivity extends MvpActivity<MainView, MainPresenter>
             startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
         }
 
-        return true;
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-
-            HomePageFragment homePageFragment = new HomePageFragment();
-            FragmentManager supportFragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.frame_layout_main, homePageFragment);
-            fragmentTransaction.commit();
-
-
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            Log.e("Main", "89562");
-            listFragment = new ListFragment();
-             {
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout_main, listFragment);
-                fragmentTransaction.commit();
-            }
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.action_select_list){
+            startActivity(new Intent(this, ListPage.class));
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-
         return true;
     }
+
+//    @SuppressWarnings("StatementWithEmptyBody")
+//    @Override
+//    public boolean onNavigationItemSelected(MenuItem item) {
+//        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_camera) {
+//
+//            HomePageFragment homePageFragment = new HomePageFragment();
+//            FragmentManager supportFragmentManager = getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+//            fragmentTransaction.add(R.id.frame_layout_main, homePageFragment);
+//            fragmentTransaction.commit();
+//
+//
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//            Log.e("Main", "89562");
+//            listFragment = new ListFragment();
+//             {
+//                FragmentManager supportFragmentManager = getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+//                fragmentTransaction.add(R.id.frame_layout_main, listFragment);
+//                fragmentTransaction.commit();
+//            }
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+//
+//
+//        return true;
+//    }
 
     /**
      * 对左侧滑栏标题初始化
      */
     @Override
     public void initTitle() {
-        userInfo = getPresenter().getUserInfo(this);
-        leftTitleUserName.setText(userInfo.getUsername());
-        leftTitleEmail.setText(userInfo.getEmail());
+       // userInfo = getPresenter().getUserInfo(this);
+       // leftTitleUserName.setText(userInfo.getUsername());
+       // leftTitleEmail.setText(userInfo.getEmail());
 
     }
 

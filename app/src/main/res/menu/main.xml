@@ -11,4 +11,10 @@
         android:orderInCategory="100"
         android:title="选择蓝牙"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_select_list"
+        android:orderInCategory="100"
+        android:title="历史数据"
+        app:showAsAction="never" />
 </menu>

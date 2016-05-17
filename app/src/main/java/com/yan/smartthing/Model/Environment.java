@@ -11,6 +11,15 @@ public class Environment extends BmobObject{
     private Float humidity;      //湿度
     private Float water;           //水位
     private Float pm2;             //pm2.5
+    private Integer waterXian;      //水位限度
+
+    public Integer getWaterXian() {
+        return waterXian;
+    }
+
+    public void setWaterXian(Integer waterXian) {
+        this.waterXian = waterXian;
+    }
 
     public Float getPm2() {
         return pm2;
